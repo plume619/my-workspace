@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💜 我的专属工作台</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
+</head>
+<body>
+  <div class="app">
+    <!-- 侧边栏 -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__logo">
+        <h1>
+          <span class="sidebar__logo-icon">💜</span>
+          <span>我的工作台</span>
+        </h1>
+      </div>
+
+      <div class="sidebar__section">
+        <div class="sidebar__section-title">个人区</div>
+        <ul class="sidebar__nav">
+          <li class="sidebar__nav-item">
+            <a class="sidebar__nav-link active" data-page="home">
+              <span class="sidebar__nav-icon">🏠</span>
+              <span>首页</span>
+            </a>
+          </li>
+          <li class="sidebar__nav-item">
+            <a class="sidebar__nav-link" data-page="life">
+              <span class="sidebar__nav-icon">✨</span>
+              <span>生活记录</span>
+            </a>
+          </li>
+          <li class="sidebar__nav-item">
+            <a class="sidebar__nav-link" data-page="schedule">
+              <span class="sidebar__nav-icon">📅</span>
+              <span>日程待办</span>
+            </a>
+          </li>
+          <li class="sidebar__nav-item">
+            <a class="sidebar__nav-link" data-page="finance">
+              <span class="sidebar__nav-icon">💰</span>
+              <span>记账本</span>
+            </a>
+          </li>
+          <li class="sidebar__nav-item">
+            <a class="sidebar__nav-link" data-page="notes">
+              <span class="sidebar__nav-icon">📚</span>
+              <span>读书笔记</span>
+            </a>
+          </li>
+          <li class="sidebar__nav-item">
+            <a class="sidebar__nav-link" data-page="health">
+              <span class="sidebar__nav-icon">🏃</span>
+              <span>健康锻炼</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar__section">
+        <div class="sidebar__section-title">工作区</div>
+        <ul class="sidebar__nav">
+          <li class="sidebar__nav-item">
+            <a class="sidebar__nav-link" data-page="work-docs">
+              <span class="sidebar__nav-icon">📄</span>
+              <span>工作文档</span>
+            </a>
+          </li>
+          <li class="sidebar__nav-item">
+            <a class="sidebar__nav-link" data-page="inspiration">
+              <span class="sidebar__nav-icon">💡</span>
+              <span>灵感抓取</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar__footer">
+        <div class="sidebar__user">
+          <div class="sidebar__avatar">沉</div>
+          <div class="sidebar__user-info">
+            <div class="sidebar__user-name">沉吟至今</div>
+            <div class="sidebar__user-desc">专属工作台</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main">
+      <!-- 顶部栏 -->
+      <header class="topbar">
+        <div class="topbar__left">
+          <button class="topbar__btn" id="menuBtn" style="display: none;">☰</button>
+          <div>
+            <div class="topbar__greeting" id="greeting">下午好 🌸</div>
+            <div class="topbar__date" id="currentDate"></div>
+          </div>
+        </div>
+        <div class="topbar__right">
+          <button class="topbar__btn" title="搜索">🔍</button>
+          <button class="topbar__btn" title="通知">🔔</button>
+          <button class="topbar__btn" title="设置">⚙️</button>
+        </div>
+      </header>
+
+      <!-- 内容区 -->
+      <div class="content">
+        <!-- 首页 -->
+        <section class="page active" id="page-home">
+          <div class="page__header">
+            <h2 class="page__title">今日概览</h2>
+            <p class="page__subtitle">来看看今天有什么新鲜事吧～</p>
+          </div>
+
+          <!-- 指标卡 -->
+          <div class="grid grid--4" style="margin-bottom: 24px;">
+            <div class="metric-card metric-card--lavender">
+              <span class="metric-card__icon">📝</span>
+              <div class="metric-card__label">今日待办</div>
+              <div class="metric-card__value" id="statSchedule">0</div>
+              <div class="metric-card__change">件</div>
+            </div>
+            <div class="metric-card metric-card--sage">
+              <span class="metric-card__icon">💸</span>
+              <div class="metric-card__label">本月支出</div>
+              <div class="metric-card__value" id="statFinance">¥0</div>
+              <div class="metric-card__change">元</div>
+            </div>
+            <div class="metric-card metric-card--pink">
+              <span class="metric-card__icon">🏃</span>
+              <div class="metric-card__label">运动打卡</div>
+              <div class="metric-card__value" id="statHealth">0</div>
+              <div class="metric-card__change">次</div>
+            </div>
+            <div class="metric-card metric-card--cream">
+              <span class="metric-card__icon">💡</span>
+              <div class="metric-card__label">灵感内容</div>
+              <div class="metric-card__value">22</div>
+              <div class="metric-card__change">条内容</div>
+            </div>
+          </div>
+
+          <div class="grid grid--3" style="margin-bottom: 24px;">
+            <!-- 今日待办 -->
+            <div class="card" style="grid-column: span 2;">
+              <div class="card__header">
+                <h3 class="card__title">📋 今日待办</h3>
+                <span class="card__action" onclick="navigateTo('schedule')">查看全部 →</span>
+              </div>
+              <div id="homeSchedule">
+                <div style="padding:20px;text-align:center;color:var(--text-tertiary);">加载中...</div>
+              </div>
+            </div>
+
+            <!-- 快速记账 -->
+            <div class="card">
+              <div class="card__header">
+                <h3 class="card__title">⚡ 快速记账</h3>
+                <span class="card__action" onclick="navigateTo('finance')">更多 →</span>
+              </div>
+              <div class="quick-actions">
+                <div class="quick-btn quick-record-btn" data-name="早餐" data-amount="8" data-category="餐饮">
+                  <div class="quick-btn__icon">🍜</div>
+                  <div class="quick-btn__label">早餐</div>
+                  <div class="quick-btn__amount">¥8</div>
+                </div>
+                <div class="quick-btn quick-record-btn" data-name="地铁" data-amount="6" data-category="交通">
+                  <div class="quick-btn__icon">🚇</div>
+                  <div class="quick-btn__label">地铁</div>
+                  <div class="quick-btn__amount">¥6</div>
+                </div>
+                <div class="quick-btn quick-record-btn" data-name="咖啡" data-amount="25" data-category="餐饮">
+                  <div class="quick-btn__icon">☕</div>
+                  <div class="quick-btn__label">咖啡</div>
+                  <div class="quick-btn__amount">¥25</div>
+                </div>
+                <div class="quick-btn quick-record-btn" data-name="外卖" data-amount="30" data-category="餐饮">
+                  <div class="quick-btn__icon">🥡</div>
+                  <div class="quick-btn__label">外卖</div>
+                  <div class="quick-btn__amount">¥30</div>
+                </div>
+              </div>
+              <div style="margin-top: 14px;">
+                <button class="btn btn--secondary btn--sm btn--block" onclick="openModal('financeModal')">
+                  ➕ 记一笔
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid--2" style="margin-bottom: 24px;">
+            <!-- 最新灵感 -->
+            <div class="card">
+              <div class="card__header">
+                <h3 class="card__title">🔥 最新灵感抓取</h3>
+                <span class="card__action" onclick="navigateTo('inspiration')">查看全部 →</span>
+              </div>
+              <div id="homeInspiration">
+                <div style="padding:20px;text-align:center;color:var(--text-tertiary);">加载中...</div>
+              </div>
+            </div>
+
+            <!-- 最近生活 -->
+            <div class="card">
+              <div class="card__header">
+                <h3 class="card__title">✨ 最近生活</h3>
+                <span class="card__action" onclick="navigateTo('life')">全部 →</span>
+              </div>
+              <div id="homeLife">
+                <div style="padding:20px;text-align:center;color:var(--text-tertiary);">加载中...</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 生活记录页 -->
+        <section class="page" id="page-life">
+          <div class="page__header">
+            <h2 class="page__title">✨ 生活碎碎念</h2>
+            <p class="page__subtitle">记录生活中的小美好</p>
+          </div>
+
+          <div class="grid grid--3">
+            <div class="card" style="grid-column: span 2;">
+              <div class="card__header">
+                <h3 class="card__title">发布新动态</h3>
+              </div>
+              <form id="lifeForm" onsubmit="return false">
+                <textarea class="form-textarea" name="content" placeholder="今天发生了什么有趣的事？✍️" style="margin-bottom: 12px;"></textarea>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div style="display: flex; gap: 8px;">
+                    <select class="form-select" name="mood" style="width: auto;">
+                      <option value="">心情</option>
+                      <option value="开心">😄 开心</option>
+                      <option value="平静">😌 平静</option>
+                      <option value="疲惫">😴 疲惫</option>
+                      <option value="兴奋">🤩 兴奋</option>
+                      <option value="难过">😢 难过</option>
+                    </select>
+                  </div>
+                  <button type="submit" class="btn btn--primary btn--sm" id="submitLife">发布</button>
+                </div>
+              </form>
+            </div>
+            <div class="card">
+              <div class="card__header">
+                <h3 class="card__title">😊 今日心情</h3>
+              </div>
+              <div style="display: flex; justify-content: space-around; font-size: 32px; margin: 20px 0;">
+                <span style="cursor: pointer; opacity: 0.5;">😄</span>
+                <span style="cursor: pointer; opacity: 1;">😌</span>
+                <span style="cursor: pointer; opacity: 0.5;">😴</span>
+                <span style="cursor: pointer; opacity: 0.5;">🤩</span>
+                <span style="cursor: pointer; opacity: 0.5;">😢</span>
+              </div>
+              <p style="text-align: center; font-size: 13px; color: var(--text-muted);">今天是平静的一天～</p>
+            </div>
+          </div>
+
+          <div style="height: 20px;"></div>
+
+          <!-- 时间线 -->
+          <div class="card">
+            <div class="card__header">
+              <h3 class="card__title">📜 生活时间线</h3>
+            </div>
+            <div id="lifeTimeline">
+              <div style="padding:20px;text-align:center;color:var(--text-tertiary);">还没有生活记录，发一条试试~</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 日程待办页 -->
+        <section class="page" id="page-schedule">
+          <div class="page__header">
+            <h2 class="page__title">📅 日程 & 待办</h2>
+            <p class="page__subtitle">规划你的每一天</p>
+          </div>
+
+          <div class="tabs">
+            <button class="tab active" data-tab="calendar-tab">日历视图</button>
+            <button class="tab" data-tab="todo-tab">待办清单</button>
+          </div>
+
+          <!-- 日历视图 -->
+          <div class="tab-content active" id="calendar-tab">
+            <div class="grid grid--3">
+              <div class="card" style="grid-column: span 2;">
+                <div class="calendar">
+                  <div class="calendar__header">
+                    <div class="calendar__title" id="calendarTitle">2026年9月</div>
+                    <div class="calendar__nav">
+                      <button class="calendar__nav-btn" onclick="changeMonth(-1)">‹</button>
+                      <button class="calendar__nav-btn" onclick="changeMonth(1)">›</button>
+                    </div>
+                  </div>
+                  <div class="calendar__weekdays">
+                    <div class="calendar__weekday">日</div>
+                    <div class="calendar__weekday">一</div>
+                    <div class="calendar__weekday">二</div>
+                    <div class="calendar__weekday">三</div>
+                    <div class="calendar__weekday">四</div>
+                    <div class="calendar__weekday">五</div>
+                    <div class="calendar__weekday">六</div>
+                  </div>
+                  <div class="calendar__days" id="calendarDays"></div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card__header">
+                  <h3 class="card__title">今日安排</h3>
+                  <button class="btn btn--primary btn--sm" onclick="openModal('scheduleModal')">+ 新建</button>
+                </div>
+                <div id="scheduleList">
+                  <div style="padding:20px;text-align:center;color:var(--text-tertiary);">暂无待办事项</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 待办清单 -->
+          <div class="tab-content" id="todo-tab">
+            <div class="card">
+              <div class="card__header">
+                <h3 class="card__title">待办清单</h3>
+                <button class="btn btn--primary btn--sm" onclick="openModal('scheduleModal')">+ 新建</button>
+              </div>
+              <div id="scheduleTodoList">
+                <div style="padding:20px;text-align:center;color:var(--text-tertiary);">暂无待办事项</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 记账页 -->
+        <section class="page" id="page-finance">
+          <div class="page__header">
+            <h2 class="page__title">💰 记账本</h2>
+            <p class="page__subtitle">管好你的每一分钱</p>
+          </div>
+
+          <div class="grid grid--3" style="margin-bottom: 24px;">
+            <div class="metric-card metric-card--lavender">
+              <span class="metric-card__icon">💸</span>
+              <div class="metric-card__label">本月支出</div>
+              <div class="metric-card__value" id="monthExpense">¥0</div>
+              <div class="metric-card__change">元</div>
+            </div>
+            <div class="metric-card metric-card--sage">
+              <span class="metric-card__icon">📊</span>
+              <div class="metric-card__label">本月笔数</div>
+              <div class="metric-card__value" id="monthCount">0</div>
+              <div class="metric-card__change">笔</div>
+            </div>
+            <div class="metric-card metric-card--cream">
+              <span class="metric-card__icon">💰</span>
+              <div class="metric-card__label">日均支出</div>
+              <div class="metric-card__value" id="dailyAvg">¥0</div>
+              <div class="metric-card__change">元</div>
+            </div>
+          </div>
+
+          <div class="grid grid--3">
+            <!-- 快捷记账 -->
+            <div class="card" style="grid-column: span 1;">
+              <div class="card__header">
+                <h3 class="card__title">⚡ 一键记账</h3>
+              </div>
+              <div class="quick-actions">
+                <div class="quick-btn quick-record-btn" data-name="早餐" data-amount="8" data-category="餐饮">
+                  <div class="quick-btn__icon">🍜</div>
+                  <div class="quick-btn__label">早餐</div>
+                  <div class="quick-btn__amount">¥8</div>
+                </div>
+                <div class="quick-btn quick-record-btn" data-name="午餐" data-amount="25" data-category="餐饮">
+                  <div class="quick-btn__icon">🍱</div>
+                  <div class="quick-btn__label">午餐</div>
+                  <div class="quick-btn__amount">¥25</div>
+                </div>
+                <div class="quick-btn quick-record-btn" data-name="地铁" data-amount="6" data-category="交通">
+                  <div class="quick-btn__icon">🚇</div>
+                  <div class="quick-btn__label">地铁</div>
+                  <div class="quick-btn__amount">¥6</div>
+                </div>
+                <div class="quick-btn quick-record-btn" data-name="咖啡" data-amount="25" data-category="餐饮">
+                  <div class="quick-btn__icon">☕</div>
+                  <div class="quick-btn__label">咖啡</div>
+                  <div class="quick-btn__amount">¥25</div>
+                </div>
+                <div class="quick-btn quick-record-btn" data-name="外卖" data-amount="30" data-category="餐饮">
+                  <div class="quick-btn__icon">🥡</div>
+                  <div class="quick-btn__label">外卖</div>
+                  <div class="quick-btn__amount">¥30</div>
+                </div>
+                <div class="quick-btn quick-record-btn" data-name="奶茶" data-amount="18" data-category="餐饮">
+                  <div class="quick-btn__icon">🧋</div>
+                  <div class="quick-btn__label">奶茶</div>
+                  <div class="quick-btn__amount">¥18</div>
+                </div>
+                <div class="quick-btn" onclick="openModal('financeModal')">
+                  <div class="quick-btn__icon">➕</div>
+                  <div class="quick-btn__label">自定义</div>
+                  <div class="quick-btn__amount">&nbsp;</div>
+                </div>
+              </div>
+              <div class="divider"></div>
+              <button class="btn btn--primary btn--block" onclick="openModal('financeModal')">
+                记一笔
+              </button>
+            </div>
+
+            <!-- 记账流水 -->
+            <div class="card" style="grid-column: span 2;">
+              <div class="card__header">
+                <h3 class="card__title">📋 记账流水</h3>
+              </div>
+              <div style="overflow-x: auto;">
+                <table class="table" style="width: 100%; border-collapse: collapse;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid var(--border-light);">
+                      <th style="padding: 10px 8px; text-align: left;">备注</th>
+                      <th style="padding: 10px 8px; text-align: center;">类别</th>
+                      <th style="padding: 10px 8px; text-align: right;">金额</th>
+                      <th style="padding: 10px 8px; text-align: center;">日期</th>
+                    </tr>
+                  </thead>
+                  <tbody id="financeTableBody">
+                    <tr><td colspan="4" style="text-align:center;padding:20px;color:var(--text-tertiary);">暂无记账记录，点击上方按钮记一笔吧~</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 读书笔记页 -->
+        <section class="page" id="page-notes">
+          <div class="page__header">
+            <h2 class="page__title">📚 读书笔记</h2>
+            <p class="page__subtitle">记录你的阅读时光</p>
+          </div>
+
+          <div class="grid grid--3">
+            <div class="card" style="grid-column: span 3;">
+              <div class="card__header">
+                <h3 class="card__title">📖 我的书架</h3>
+                <button class="btn btn--primary btn--sm" onclick="openModal('noteModal')">+ 添加</button>
+              </div>
+              <div id="notesList">
+                <div style="padding:20px;text-align:center;color:var(--text-tertiary);">还没有读书笔记，添加第一本吧~</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 健康锻炼页 -->
+        <section class="page" id="page-health">
+          <div class="page__header">
+            <h2 class="page__title">🏃 健康锻炼</h2>
+            <p class="page__subtitle">健康生活每一天</p>
+          </div>
+
+          <div class="grid grid--4" style="margin-bottom: 24px;">
+            <div class="metric-card metric-card--sage">
+              <span class="metric-card__icon">✅</span>
+              <div class="metric-card__label">运动次数</div>
+              <div class="metric-card__value" id="healthCount">0</div>
+              <div class="metric-card__change">次</div>
+            </div>
+            <div class="metric-card metric-card--lavender">
+              <span class="metric-card__icon">⏱️</span>
+              <div class="metric-card__label">总时长</div>
+              <div class="metric-card__value" id="healthDuration">0</div>
+              <div class="metric-card__change">分钟</div>
+            </div>
+            <div class="metric-card metric-card--pink">
+              <span class="metric-card__icon">🏆</span>
+              <div class="metric-card__label">今日打卡</div>
+              <div class="metric-card__value" id="todayCheckin">0</div>
+              <div class="metric-card__change">次</div>
+            </div>
+            <div class="metric-card metric-card--cream">
+              <span class="metric-card__icon">📅</span>
+              <div class="metric-card__label">本月完成</div>
+              <div class="metric-card__value" id="monthCheckin">0</div>
+              <div class="metric-card__change">次</div>
+            </div>
+          </div>
+
+          <div class="grid grid--2">
+            <!-- 今日打卡 -->
+            <div class="card">
+              <div class="card__header">
+                <h3 class="card__title">📋 一键打卡</h3>
+              </div>
+              <div class="checkin-card">
+                <div class="checkin-card__icon">👀</div>
+                <div class="checkin-card__info">
+                  <div class="checkin-card__name">眼保健操</div>
+                  <div class="checkin-card__desc">5分钟 · 每天2次</div>
+                </div>
+                <button class="checkin-card__btn" data-exercise="眼保健操" data-duration="5">○</button>
+              </div>
+              <div class="checkin-card">
+                <div class="checkin-card__icon">🧘</div>
+                <div class="checkin-card__info">
+                  <div class="checkin-card__name">拉伸运动</div>
+                  <div class="checkin-card__desc">10分钟 · 每天1次</div>
+                </div>
+                <button class="checkin-card__btn" data-exercise="拉伸运动" data-duration="10">○</button>
+              </div>
+              <div class="checkin-card">
+                <div class="checkin-card__icon">🏃</div>
+                <div class="checkin-card__info">
+                  <div class="checkin-card__name">跑步</div>
+                  <div class="checkin-card__desc">30分钟 · 按需</div>
+                </div>
+                <button class="checkin-card__btn" data-exercise="跑步" data-duration="30">○</button>
+              </div>
+              <div class="checkin-card">
+                <div class="checkin-card__icon">🧘‍♀️</div>
+                <div class="checkin-card__info">
+                  <div class="checkin-card__name">瑜伽</div>
+                  <div class="checkin-card__desc">45分钟 · 按需</div>
+                </div>
+                <button class="checkin-card__btn" data-exercise="瑜伽" data-duration="45">○</button>
+              </div>
+            </div>
+
+            <!-- 运动记录 -->
+            <div class="card">
+              <div class="card__header">
+                <h3 class="card__title">📊 运动记录</h3>
+              </div>
+              <div id="healthLog">
+                <div style="padding:20px;text-align:center;color:var(--text-tertiary);">还没有运动记录，去打卡吧~</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 工作文档页 -->
+        <section class="page" id="page-work-docs">
+          <div class="page__header">
+            <h2 class="page__title">📄 工作文档</h2>
+            <p class="page__subtitle">飞书文档，一站管理</p>
+          </div>
+
+          <div class="grid grid--4" style="margin-bottom: 24px;">
+            <a href="https://ncny2zg8ocjy.feishu.cn/base/YVqhb4IrtahrDYsucTjcGQLznGg" target="_blank" class="btn btn--primary" style="text-decoration:none;">
+              📊 工作台数据
+            </a>
+            <a href="https://www.feishu.cn/docs" target="_blank" class="btn btn--secondary" style="text-decoration:none;">
+              📝 飞书文档
+            </a>
+            <a href="https://www.feishu.cn/sheets" target="_blank" class="btn btn--secondary" style="text-decoration:none;">
+              📊 飞书表格
+            </a>
+            <a href="https://www.feishu.cn/drive" target="_blank" class="btn btn--secondary" style="text-decoration:none;">
+              📁 飞书云空间
+            </a>
+          </div>
+
+          <div class="card">
+            <div class="card__header">
+              <h3 class="card__title">📌 快捷入口</h3>
+            </div>
+            <div class="list-item">
+              <div class="list-item__icon">📊</div>
+              <div class="list-item__content">
+                <a href="https://ncny2zg8ocjy.feishu.cn/base/YVqhb4IrtahrDYsucTjcGQLznGg" target="_blank" style="text-decoration:none;color:inherit;">
+                  <div class="list-item__title">💜 我的专属工作台数据</div>
+                  <div class="list-item__desc">多维表格 · 8张数据表</div>
+                </a>
+              </div>
+              <span class="tag tag--lavender">数据</span>
+            </div>
+            <div class="list-item">
+              <div class="list-item__icon">💡</div>
+              <div class="list-item__content">
+                <a href="https://ncny2zg8ocjy.feishu.cn/base/YVqhb4IrtahrDYsucTjcGQLznGg" target="_blank" style="text-decoration:none;color:inherit;">
+                  <div class="list-item__title">灵感抓取结果</div>
+                  <div class="list-item__desc">多维表格 · 22条记录</div>
+                </a>
+              </div>
+              <span class="tag tag--pink">灵感</span>
+            </div>
+            <div class="list-item">
+              <div class="list-item__icon">🔑</div>
+              <div class="list-item__content">
+                <a href="https://ncny2zg8ocjy.feishu.cn/base/YVqhb4IrtahrDYsucTjcGQLznGg" target="_blank" style="text-decoration:none;color:inherit;">
+                  <div class="list-item__title">关键词管理</div>
+                  <div class="list-item__desc">多维表格 · 3个关键词</div>
+                </a>
+              </div>
+              <span class="tag tag--sage">配置</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 灵感抓取页 -->
+        <section class="page" id="page-inspiration">
+          <div class="page__header">
+            <h2 class="page__title">💡 灵感抓取</h2>
+            <p class="page__subtitle">多平台热点，一网打尽</p>
+          </div>
+
+          <div class="grid grid--4" style="margin-bottom: 24px;">
+            <div class="metric-card metric-card--lavender">
+              <span class="metric-card__icon">🔍</span>
+              <div class="metric-card__label">追踪关键词</div>
+              <div class="metric-card__value" id="statKeywords">3</div>
+              <div class="metric-card__change">个 · 启用中</div>
+            </div>
+            <div class="metric-card metric-card--sage">
+              <span class="metric-card__icon">📥</span>
+              <div class="metric-card__label">已抓取内容</div>
+              <div class="metric-card__value" id="statInspiration">22</div>
+              <div class="metric-card__change">条 · 总计</div>
+            </div>
+            <div class="metric-card metric-card--pink">
+              <span class="metric-card__icon">⏱️</span>
+              <div class="metric-card__label">下次抓取</div>
+              <div class="metric-card__value">周一</div>
+              <div class="metric-card__change">09:00 自动执行</div>
+            </div>
+            <div class="metric-card metric-card--cream">
+              <span class="metric-card__icon">📄</span>
+              <div class="metric-card__label">飞书文档</div>
+              <div class="metric-card__value">📊</div>
+              <div class="metric-card__change">数据已同步</div>
+            </div>
+          </div>
+
+          <div class="grid grid--3">
+            <!-- 关键词管理 -->
+            <div class="card" style="grid-column: span 1;">
+              <div class="card__header">
+                <h3 class="card__title">🔑 追踪关键词</h3>
+                <a href="https://ncny2zg8ocjy.feishu.cn/base/YVqhb4IrtahrDYsucTjcGQLznGg" target="_blank" class="btn btn--primary btn--sm">+ 在飞书添加</a>
+              </div>
+              <div id="keywordsList">
+                <div style="padding:20px;text-align:center;color:var(--text-tertiary);">加载中...</div>
+              </div>
+              <div class="divider"></div>
+              <div style="text-align: center;">
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">下次自动抓取：每周一 09:00</p>
+              </div>
+            </div>
+
+            <!-- 抓取结果 -->
+            <div class="card" style="grid-column: span 2;">
+              <div class="card__header">
+                <h3 class="card__title">🔥 抓取结果（按点赞数排序）</h3>
+                <a href="https://ncny2zg8ocjy.feishu.cn/base/YVqhb4IrtahrDYsucTjcGQLznGg" target="_blank" class="btn btn--ghost btn--sm">在飞书查看 →</a>
+              </div>
+              <div style="overflow-x: auto;">
+                <table class="table" style="width: 100%; border-collapse: collapse;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid var(--border-light);">
+                      <th style="padding: 10px 8px; text-align: left; font-size: 13px;">标题</th>
+                      <th style="padding: 10px 8px; text-align: center; font-size: 13px;">❤️ 点赞</th>
+                      <th style="padding: 10px 8px; text-align: center; font-size: 13px;">⭐ 收藏</th>
+                      <th style="padding: 10px 8px; text-align: center; font-size: 13px;">日期</th>
+                      <th style="padding: 10px 8px; text-align: center; font-size: 13px;">平台</th>
+                      <th style="padding: 10px 8px; text-align: center; font-size: 13px;">关键词</th>
+                    </tr>
+                  </thead>
+                  <tbody id="inspirationTableBody">
+                    <tr><td colspan="6" style="text-align:center;padding:30px;color:var(--text-tertiary);">加载中...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- 记账弹窗 -->
+  <div class="modal-overlay" id="financeModal">
+    <div class="modal">
+      <div class="modal__header">
+        <h3 class="modal__title">💰 记一笔</h3>
+        <button class="modal__close" onclick="closeModal('financeModal')">✕</button>
+      </div>
+      <form id="financeForm" onsubmit="return false">
+        <div class="modal__body">
+          <div class="form-group">
+            <label class="form-label">金额</label>
+            <input type="number" class="form-input" name="amount" placeholder="请输入金额" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">分类</label>
+              <select class="form-select" name="category">
+                <option value="餐饮">餐饮</option>
+                <option value="交通">交通</option>
+                <option value="购物">购物</option>
+                <option value="娱乐">娱乐</option>
+                <option value="居住">居住</option>
+                <option value="其他">其他</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">账户</label>
+              <select class="form-select" name="account">
+                <option value="微信">微信</option>
+                <option value="支付宝">支付宝</option>
+                <option value="现金">现金</option>
+                <option value="银行卡">银行卡</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">日期</label>
+            <input type="date" class="form-input" name="date">
+          </div>
+          <div class="form-group">
+            <label class="form-label">备注</label>
+            <input type="text" class="form-input" name="note" placeholder="添加备注...">
+          </div>
+        </div>
+        <div class="modal__footer">
+          <button type="button" class="btn btn--secondary" onclick="closeModal('financeModal')">取消</button>
+          <button type="submit" class="btn btn--primary" id="submitFinance">保存</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 日程弹窗 -->
+  <div class="modal-overlay" id="scheduleModal">
+    <div class="modal">
+      <div class="modal__header">
+        <h3 class="modal__title">📅 新建日程/待办</h3>
+        <button class="modal__close" onclick="closeModal('scheduleModal')">✕</button>
+      </div>
+      <form id="scheduleForm" onsubmit="return false">
+        <div class="modal__body">
+          <div class="form-group">
+            <label class="form-label">标题</label>
+            <input type="text" class="form-input" name="title" placeholder="请输入标题" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">优先级</label>
+              <select class="form-select" name="priority">
+                <option value="中">中</option>
+                <option value="高">高</option>
+                <option value="低">低</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">状态</label>
+              <select class="form-select" name="status">
+                <option value="待完成">待完成</option>
+                <option value="进行中">进行中</option>
+                <option value="已完成">已完成</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">日期</label>
+              <input type="date" class="form-input" name="date">
+            </div>
+            <div class="form-group">
+              <label class="form-label">截止时间</label>
+              <input type="text" class="form-input" name="deadline" placeholder="如：18:00 或 2026-09-20">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">备注</label>
+            <textarea class="form-textarea" name="note" placeholder="添加备注..."></textarea>
+          </div>
+        </div>
+        <div class="modal__footer">
+          <button type="button" class="btn btn--secondary" onclick="closeModal('scheduleModal')">取消</button>
+          <button type="submit" class="btn btn--primary" id="submitSchedule">保存</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 读书笔记弹窗 -->
+  <div class="modal-overlay" id="noteModal">
+    <div class="modal">
+      <div class="modal__header">
+        <h3 class="modal__title">📚 添加笔记</h3>
+        <button class="modal__close" onclick="closeModal('noteModal')">✕</button>
+      </div>
+      <form id="noteForm" onsubmit="return false">
+        <div class="modal__body">
+          <div class="form-group">
+            <label class="form-label">书名/文章名</label>
+            <input type="text" class="form-input" name="title" placeholder="请输入书名或文章名" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">类型</label>
+              <select class="form-select" name="type">
+                <option value="读书">读书</option>
+                <option value="文章">文章</option>
+                <option value="教程">教程</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">状态</label>
+              <select class="form-select" name="status">
+                <option value="想读">想读</option>
+                <option value="在读">在读</option>
+                <option value="已读">已读</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">作者</label>
+            <input type="text" class="form-input" name="author" placeholder="作者名">
+          </div>
+          <div class="form-group">
+            <label class="form-label">链接</label>
+            <input type="text" class="form-input" name="link" placeholder="文章链接（可选）">
+          </div>
+          <div class="form-group">
+            <label class="form-label">笔记内容</label>
+            <textarea class="form-textarea" name="note" placeholder="写下你的笔记..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">金句摘录</label>
+            <textarea class="form-textarea" name="quote" placeholder="摘录喜欢的句子..."></textarea>
+          </div>
+        </div>
+        <div class="modal__footer">
+          <button type="button" class="btn btn--secondary" onclick="closeModal('noteModal')">取消</button>
+          <button type="submit" class="btn btn--primary" id="submitNote">保存</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 浮动按钮 -->
+  <button class="fab" onclick="openModal('financeModal')" title="快速记账">
+    ➕
+  </button>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
